@@ -1,6 +1,5 @@
-/*In this example, it receive events from kafka source and dump it into a non-partitioned Hive table.
-Note: Your Hive table schema has to be same as incoming event schema.
-*/
+/* In this example, it receive events from kafka source and dump it into a non-partitioned Hive table.
+Note: Your Hive table schema has to be same as incoming event schema. */
 
 import java.sql.Timestamp
 
@@ -42,7 +41,7 @@ var ds_kafka = spark
 val df_kafka = ds_kafka.selectExpr("CAST(value AS STRING)").as[(String)]
 val df1_kafka = df_kafka.select(from_json($"value", mySchema).as("data")).select("data.*")
 val query = df1_kafka.writeStream
-.queryName("stream_analytics_ashish")
+.queryName("stream_to_hive")
 .appendToTable(tableName)
 .outputMode("Append")
 .option("table.metastore.stopOnFailure", "false")
